@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+specVersion: "2.4"
+metadata:
+  name: eh.ui5.testapp
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: https://visdr6app01.rs.edeka.net
+          client: 100
+          username: 7596093
+          password: ibj16J@lt
+        app:
+          #DR6
+          name: ZUI5Testapp	
+          description: UI5 Test App
+          package: ZS4SCHULUNG
+          transport: DR6K919853

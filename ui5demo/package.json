@@ -1,0 +1,20 @@
+{
+    "name": "test.test.myui5project",
+    "scripts": {
+        "build": "mbt build --mtar test.test.myui5project.mtar",
+        "build:workspaces": "npm run build --workspaces --if-present",
+        "deploy": "cf deploy mta_archives/test.test.myui5project.mtar --retries 0",
+        "lint": "npm run lint --workspaces --if-present",
+        "ui5lint": "npm run ui5lint --workspaces --if-present",
+        "start:myui5app": "npm start --workspace myui5app"
+    },
+    "dependencies": {
+        "mbt": "^1"
+    },
+    "workspaces": [
+        "myui5app"
+    ],
+    "devDependencies": {
+        "@sap/ux-ui5-tooling": "^1.16.2"
+    }
+}

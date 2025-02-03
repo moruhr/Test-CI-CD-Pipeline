@@ -1,0 +1,39 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*' # Workflow wird ausgelöst, wenn ein Tag wie v1.0.0 gepusht wird
+
+jobs:
+  release:
+    runs-on: self-hosted # Nutzt den Self-Hosted Runner
+    steps:
+      # 1. Repository auschecken
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Erstelle ein Release
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}  # Der Name des Tags
+          release_name: "Release ${{ github.ref_name }}"
+          body: "Automated release for ${{ github.ref_name }}"
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 3. ZIP-Datei erstellen
+      - name: Create ZIP
+        run: zip -r my_project.zip ./dist  # Passe ./dist an den Pfad deines Build-Ordners an
+
+      # 4. Lade die ZIP-Datei hoch
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./my_project.zip
+          asset_name: my_project.zip
+          asset_content_type: application/zip
